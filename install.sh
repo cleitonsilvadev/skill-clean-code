@@ -196,9 +196,11 @@ if [ "$UNINSTALL" = true ]; then
   echo -e "${YELLOW}Removendo Clean Code Skill...${NC}"
   uninstall_from_path "$HOME/.claude/skills"
   uninstall_from_path "$HOME/.agents/skills"
+  uninstall_from_path "$HOME/.config/opencode/skills"
   uninstall_from_path "./.claude/skills"
   uninstall_from_path "./.agents/skills"
-  rm -f ./.cursorrules ./.windsurfrules
+  uninstall_from_path "./.opencode/skills"
+  rm -f ./.cursorrules ./.windsurfrules ./.git/hooks/pre-commit
   echo -e "${GREEN}Desinstalação concluída com sucesso!${NC}"
   exit 0
 fi
@@ -207,10 +209,12 @@ if [ "$MODE" = "global" ]; then
   echo -e "${BLUE}Instalando globalmente para seus assistentes de IA...${NC}"
   install_to_path "$HOME/.claude/skills"
   install_to_path "$HOME/.agents/skills"
+  install_to_path "$HOME/.config/opencode/skills"
 elif [ "$MODE" = "project" ]; then
   echo -e "${BLUE}Instalando no projeto (${TARGET_DIR})...${NC}"
   install_to_path "${TARGET_DIR}/.claude/skills"
   install_to_path "${TARGET_DIR}/.agents/skills"
+  install_to_path "${TARGET_DIR}/.opencode/skills"
 elif [ "$MODE" = "cursor" ]; then
   install_rules_file "cursorrules" ".cursorrules"
 elif [ "$MODE" = "windsurf" ]; then
