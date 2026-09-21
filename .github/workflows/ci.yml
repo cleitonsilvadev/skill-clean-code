@@ -42,22 +42,17 @@ jobs:
           ./install.sh --global
           test -f "$HOME/.claude/skills/clean-code/SKILL.md"
           test -f "$HOME/.claude/skills/clean-code/reference.md"
-          test -f "$HOME/.agents/skills/clean-code/SKILL.md"
-          test -f "$HOME/.agents/skills/clean-code/reference.md"
 
       - name: Test symlink installation
         run: |
           ./install.sh --symlink
           test -L "$HOME/.claude/skills/clean-code"
-          test -L "$HOME/.agents/skills/clean-code"
 
       - name: Test per-project installation
         run: |
           ./install.sh --project ./test-workspace
           test -f "./test-workspace/.claude/skills/clean-code/SKILL.md"
           test -f "./test-workspace/.claude/skills/clean-code/reference.md"
-          test -f "./test-workspace/.agents/skills/clean-code/SKILL.md"
-          test -f "./test-workspace/.agents/skills/clean-code/reference.md"
 
       - name: Test Cursor rules generation
         run: |
@@ -82,13 +77,11 @@ jobs:
         run: |
           cat install.sh | bash -s -- --project ./pipe-workspace
           test -f "./pipe-workspace/.claude/skills/clean-code/SKILL.md"
-          test -f "./pipe-workspace/.agents/skills/clean-code/SKILL.md"
 
       - name: Test uninstallation
         run: |
           ./install.sh --uninstall
           ! test -e "$HOME/.claude/skills/clean-code"
-          ! test -e "$HOME/.agents/skills/clean-code"
 
       - name: Test Makefile targets
         run: |

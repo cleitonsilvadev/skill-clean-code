@@ -23,8 +23,8 @@ show_help() {
   echo "Uso: ./install.sh [opções] ou curl ... | bash -s -- [opções]"
   echo ""
   echo "Opções:"
-  echo "  -g, --global       Instala globalmente para Claude Code e OpenCode/Agents (padrão)"
-  echo "  -p, --project      Instala localmente no projeto atual (em .claude/skills e .agents/skills)"
+  echo "  -g, --global       Instala globalmente em ~/.claude/skills (lido por Claude Code e OpenCode)"
+  echo "  -p, --project      Instala localmente no projeto em .claude/skills"
   echo "      --cursor       Gera arquivo .cursorrules no projeto atual para o Cursor"
   echo "      --windsurf     Gera arquivo .windsurfrules no projeto atual para o Windsurf"
   echo "      --hook         Instala Git pre-commit hook no projeto atual (.git/hooks/pre-commit)"
@@ -33,8 +33,8 @@ show_help() {
   echo "  -h, --help         Exibe esta mensagem de ajuda"
   echo ""
   echo "Exemplos:"
-  echo "  ./install.sh                 # Global (Claude Code e OpenCode)"
-  echo "  ./install.sh --project       # No projeto atual (.claude e .agents)"
+  echo "  ./install.sh                 # Global (~/.claude/skills)"
+  echo "  ./install.sh --project       # No projeto atual (.claude/skills)"
   echo "  ./install.sh --cursor        # Gera .cursorrules no projeto atual"
   echo "  ./install.sh --windsurf      # Gera .windsurfrules no projeto atual"
   echo "  ./install.sh --hook          # Instala Git pre-commit hook"
@@ -206,15 +206,11 @@ if [ "$UNINSTALL" = true ]; then
 fi
 
 if [ "$MODE" = "global" ]; then
-  echo -e "${BLUE}Instalando globalmente para seus assistentes de IA...${NC}"
+  echo -e "${BLUE}Instalando globalmente em ~/.claude/skills (lido por Claude Code e OpenCode)...${NC}"
   install_to_path "$HOME/.claude/skills"
-  install_to_path "$HOME/.agents/skills"
-  install_to_path "$HOME/.config/opencode/skills"
 elif [ "$MODE" = "project" ]; then
-  echo -e "${BLUE}Instalando no projeto (${TARGET_DIR})...${NC}"
+  echo -e "${BLUE}Instalando no projeto (${TARGET_DIR}/.claude/skills)...${NC}"
   install_to_path "${TARGET_DIR}/.claude/skills"
-  install_to_path "${TARGET_DIR}/.agents/skills"
-  install_to_path "${TARGET_DIR}/.opencode/skills"
 elif [ "$MODE" = "cursor" ]; then
   install_rules_file "cursorrules" ".cursorrules"
 elif [ "$MODE" = "windsurf" ]; then

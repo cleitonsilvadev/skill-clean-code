@@ -29,7 +29,7 @@ The fastest way to install without needing to manually clone a repository.
 
 ### Via `curl`:
 
-**Global (Claude Code and OpenCode / Agents):**
+**Global (Claude Code and OpenCode):**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/cleitonsilvadev/skill-clean-code/main/install.sh | bash
 ```
@@ -64,26 +64,18 @@ curl -fsSL https://raw.githubusercontent.com/cleitonsilvadev/skill-clean-code/ma
 
 Ideal for keeping a manageable Git repository updated via `git pull`.
 
-### For Claude Code:
+### For Claude Code & OpenCode:
 
 ```bash
 git clone https://github.com/cleitonsilvadev/skill-clean-code.git ~/.claude/skills/clean-code
 ```
 
-### For OpenCode / Agents:
-
-```bash
-git clone https://github.com/cleitonsilvadev/skill-clean-code.git ~/.agents/skills/clean-code
-```
+> **Note:** OpenCode automatically discovers and loads skills located in `~/.claude/skills/`. A single installation serves both assistants!
 
 ### How to update via Git:
 
 ```bash
-# Update Claude Code
 git -C ~/.claude/skills/clean-code pull
-
-# Update OpenCode / Agents
-git -C ~/.agents/skills/clean-code pull
 ```
 
 ---
@@ -94,13 +86,10 @@ git -C ~/.agents/skills/clean-code pull
 If you have cloned this repository on your machine (e.g., in `~/projects/skill-clean-code`) and want to edit the skill or the reference guide with **immediate effect** without reinstalling:
 
 ```bash
-mkdir -p ~/.claude/skills ~/.agents/skills
+mkdir -p ~/.claude/skills
 
-# Symlink for Claude Code
+# Symlink for Claude Code and OpenCode
 ln -s ~/projects/skill-clean-code ~/.claude/skills/clean-code
-
-# Symlink for OpenCode / Agents
-ln -s ~/projects/skill-clean-code ~/.agents/skills/clean-code
 ```
 
 ---
@@ -222,7 +211,5 @@ make uninstall
 
 # Or manually
 rm -rf ~/.claude/skills/clean-code
-rm -rf ~/.agents/skills/clean-code
 rm -rf .claude/skills/clean-code
-rm -rf .agents/skills/clean-code
 ```
