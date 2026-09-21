@@ -4,6 +4,7 @@
 
 # 🧹 Clean Code Skill
 
+[![npm version](https://img.shields.io/npm/v/skill-clean-code.svg?color=cb3837)](https://www.npmjs.com/package/skill-clean-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/cleitonsilvadev/skill-clean-code/actions/workflows/ci.yml/badge.svg)](https://github.com/cleitonsilvadev/skill-clean-code/actions/workflows/ci.yml)
 [![Compatible with](https://img.shields.io/badge/Compatible%20with-Claude%20Code%20%7C%20OpenCode%20%7C%20Cursor%20%7C%20Windsurf-black)](https://github.com/cleitonsilvadev/skill-clean-code)
@@ -104,22 +105,22 @@ Index of all rules from the skill checklist (click the `#` number to jump to the
 The skill instructs AI agents to strictly adhere to the following areas:
 
 ### 1. Flow Control & Readability
-- <a id="rule-early-return"></a>**Early Return:** Use early exits and guard clauses instead of nesting multiple levels of `if`/`else`. ([Examples in reference.md ↗](reference.md#2-functions))
-- <a id="rule-room-to-breathe"></a>**Room to Breathe (Vertical Spacing):** Blank lines before every `if`, after variable declarations, before `return`, and around loops. ([Examples in reference.md ↗](reference.md#5-room-to-breathe-and-explicit-scopes))
-- <a id="rule-guard-clauses"></a>**Guard Clauses:** Only a guard clause whose whole body is a single `return` or `throw` stays unbraced. Any block performing real work requires explicit braces. ([Examples in reference.md ↗](reference.md#5-room-to-breathe-and-explicit-scopes))
+- <a id="rule-early-return"></a>[**Early Return**](reference.md#2-functions): Use early exits and guard clauses instead of nesting multiple levels of `if`/`else`.
+- <a id="rule-room-to-breathe"></a>[**Room to Breathe**](reference.md#5-room-to-breathe-and-explicit-scopes) (Vertical Spacing): Blank lines before every `if`, after variable declarations, before `return`, and around loops.
+- <a id="rule-guard-clauses"></a>[**Guard Clauses**](reference.md#5-room-to-breathe-and-explicit-scopes): Only a guard clause whose whole body is a single `return` or `throw` stays unbraced. Any block performing real work requires explicit braces.
 
 ### 2. Naming & Constants
-- <a id="rule-descriptive-names"></a>**Clear Intent:** Descriptive names stating what the variable holds or what the function does/returns, without needless abbreviations (`qty`, `tmp`, `val`, `data2`). ([Examples in reference.md ↗](reference.md#1-names-and-intent))
-- <a id="rule-no-magic-numbers"></a>**No Magic Numbers:** Extract numeric or literal values to named constants (e.g., `UPPER_SNAKE_CASE`). ([Examples in reference.md ↗](reference.md#3-constants-vs-magic-numbers))
-- <a id="rule-language-convention"></a>**Language Convention:** Write code (identifiers, functions, types) in **English** by default, unless the project explicitly specifies another language; comments, documentation, and user-facing logs follow the pattern and tone established in the project. ([Examples in reference.md ↗](reference.md#1-names-and-intent))
-- <a id="rule-valuable-comments"></a>**Comments for the Non-Obvious:** Concise JSDoc/docstrings focusing on *why*, never narrating what the code visibly does. ([Examples in reference.md ↗](reference.md#6-comments-only-when-non-obvious))
+- <a id="rule-descriptive-names"></a>[**Clear Intent**](reference.md#1-names-and-intent): Descriptive names stating what the variable holds or what the function does/returns, without needless abbreviations (`qty`, `tmp`, `val`, `data2`).
+- <a id="rule-no-magic-numbers"></a>[**No Magic Numbers**](reference.md#3-constants-vs-magic-numbers): Extract numeric or literal values to named constants (e.g., `UPPER_SNAKE_CASE`).
+- <a id="rule-language-convention"></a>[**Language Convention**](reference.md#1-names-and-intent): Write code (identifiers, functions, types) in **English** by default, unless the project explicitly specifies another language; comments, documentation, and user-facing logs follow the pattern and tone established in the project.
+- <a id="rule-valuable-comments"></a>[**Comments for the Non-Obvious**](reference.md#6-comments-only-when-non-obvious): Concise JSDoc/docstrings focusing on *why*, never narrating what the code visibly does.
 
 ### 3. Immutability & Scope
-- <a id="rule-immutable-by-default"></a>**Immutable by Default:** Prefer `const`/`readonly` plus named pure functions over mutable variables (`let`) reassigned across conditional branches. ([Examples in reference.md ↗](reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse))
-- **Restricted Mutation:** `let` is reserved strictly when mutation is the essence of the algorithm (e.g., loop accumulators). ([Examples in reference.md ↗](reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse))
+- <a id="rule-immutable-by-default"></a>[**Immutable by Default**](reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): Prefer `const`/`readonly` plus named pure functions over mutable variables (`let`) reassigned across conditional branches.
+- [**Restricted Mutation**](reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): `let` is reserved strictly when mutation is the essence of the algorithm (e.g., loop accumulators).
 
 ### 4. Function Size & Complexity (SRP)
-- <a id="rule-small-functions-srp"></a>**Single Responsibility Principle (SRP):** Each function must do one thing only. ([Examples in reference.md ↗](reference.md#2-functions))
+- <a id="rule-small-functions-srp"></a>[**Single Responsibility Principle (SRP)**](reference.md#2-functions): Each function must do one thing only.
 - **Visual Size:** Functions should comfortably fit on a screen (~60 lines). Beyond that, they are doing too much.
 - **Threshold Metrics:**
   - Maximum **≤ 4 parameters** (group into an object/interface beyond that).
@@ -127,28 +128,28 @@ The skill instructs AI agents to strictly adhere to the following areas:
   - Nesting depth **≤ 3**.
 
 ### 5. Syntax & Clean Comparisons
-- <a id="rule-strict-comparison"></a>**Strict Comparison:** Mandatory `===` / `!==` (in JS/TS) to prevent implicit type coercion bugs. ([Examples in reference.md ↗](reference.md#7-readability-and-simplicity))
-- <a id="rule-string-interpolation"></a>**String Interpolation:** Use template literals (e.g. `` `User ${id}` ``) instead of `+` concatenation. ([Examples in reference.md ↗](reference.md#7-readability-and-simplicity))
-- <a id="rule-no-else-after-return"></a>**No Redundant Else:** Never write an `else` branch after a block that already terminated execution with `return` or `throw`. ([Examples in reference.md ↗](reference.md#2-functions))
-- <a id="rule-no-nested-ternaries"></a>**No Nested Ternaries:** Nested ternaries impair readability; use guard clauses or dedicated helper functions. ([Examples in reference.md ↗](reference.md#7-readability-and-simplicity))
+- <a id="rule-strict-comparison"></a>[**Strict Comparison**](reference.md#7-readability-and-simplicity): Mandatory `===` / `!==` (in JS/TS) to prevent implicit type coercion bugs.
+- <a id="rule-string-interpolation"></a>[**String Interpolation**](reference.md#7-readability-and-simplicity): Use template literals (e.g. `` `User ${id}` ``) instead of `+` concatenation.
+- <a id="rule-no-else-after-return"></a>[**No Redundant Else**](reference.md#2-functions): Never write an `else` branch after a block that already terminated execution with `return` or `throw`.
+- <a id="rule-no-nested-ternaries"></a>[**No Nested Ternaries**](reference.md#7-readability-and-simplicity): Nested ternaries impair readability; use guard clauses or dedicated helper functions.
 
 ### 6. Context-Rich Error Handling
-- <a id="rule-errors-with-context"></a>**Never Swallow Exceptions:** Capturing errors without proper handling or logging (`catch {}`) is strictly prohibited. ([Examples in reference.md ↗](reference.md#9-error-handling))
-- **Full Context:** Propagated or logged errors must include status, clear human-readable message, and original `cause`. ([Examples in reference.md ↗](reference.md#9-error-handling))
+- <a id="rule-errors-with-context"></a>[**Never Swallow Exceptions**](reference.md#9-error-handling): Capturing errors without proper handling or logging (`catch {}`) is strictly prohibited.
+- [**Full Context**](reference.md#9-error-handling): Propagated or logged errors must include status, clear human-readable message, and original `cause`.
 
 ### 7. Architecture & Cohesion
-- <a id="rule-layer-separation"></a>**Decoupling:** Separate core business logic from infrastructure (database queries, HTTP controllers, view formatting). ([Examples in reference.md ↗](reference.md#8-coupling-and-cohesion))
-- <a id="rule-real-dry"></a>**Real DRY:** Merge code only when it changes **for the exact same reason**; do not artificially unify distinct logic that temporarily looks similar. ([Examples in reference.md ↗](reference.md#8-coupling-and-cohesion))
+- <a id="rule-layer-separation"></a>[**Decoupling**](reference.md#8-coupling-and-cohesion): Separate core business logic from infrastructure (database queries, HTTP controllers, view formatting).
+- <a id="rule-real-dry"></a>[**Real DRY**](reference.md#8-coupling-and-cohesion): Merge code only when it changes **for the exact same reason**; do not artificially unify distinct logic that temporarily looks similar.
 
 ### 8. React-Specific Guidelines
-- <a id="rule-react-no-sync-effects"></a>**Effects Do Not Sync State:** Never copy props into state inside `useEffect`. Reset with `key` or compute derived state during rendering. ([Examples in reference.md ↗](reference.md#10-react--an-effect-is-not-for-syncing-state))
-- <a id="rule-react-effects-boundary"></a>**Effects are for External Systems:** Reserve `useEffect` for networks, timers, DOM listeners, or polling. ([Examples in reference.md ↗](reference.md#10-react--an-effect-is-not-for-syncing-state))
-- <a id="rule-react-complete-deps"></a>**Complete Dependency Arrays:** Never omit dependencies; destructure stable hooks (`const { mutateAsync } = useX()`). ([Examples in reference.md ↗](reference.md#10-react--an-effect-is-not-for-syncing-state))
-- <a id="rule-react-untouched-generated"></a>**Untouched Generated Code:** Never manually alter vendored or generated code (e.g., `shadcn/ui`, Prisma clients, `dist/`). ([Examples in reference.md ↗](reference.md#10-react--an-effect-is-not-for-syncing-state))
+- <a id="rule-react-no-sync-effects"></a>[**Effects Do Not Sync State**](reference.md#10-react--an-effect-is-not-for-syncing-state): Never copy props into state inside `useEffect`. Reset with `key` or compute derived state during rendering.
+- <a id="rule-react-effects-boundary"></a>[**Effects are for External Systems**](reference.md#10-react--an-effect-is-not-for-syncing-state): Reserve `useEffect` for networks, timers, DOM listeners, or polling.
+- <a id="rule-react-complete-deps"></a>[**Complete Dependency Arrays**](reference.md#10-react--an-effect-is-not-for-syncing-state): Never omit dependencies; destructure stable hooks (`const { mutateAsync } = useX()`).
+- <a id="rule-react-untouched-generated"></a>[**Untouched Generated Code**](reference.md#10-react--an-effect-is-not-for-syncing-state): Never manually alter vendored or generated code (e.g., `shadcn/ui`, Prisma clients, `dist/`).
 
 ### 9. Quality Gate & Discipline
-- <a id="rule-quality-gate-discipline"></a>**Active Diff Review:** The author/agent must review diffs against this checklist before considering work finished. ([Examples in reference.md ↗](reference.md#12-human-judgment-not-mechanizable))
-- **Repository Quality Gate:** Always run the repository's verification commands (`yarn lint:check`, `npm test`, `pytest`, `tsc`). ([Examples in reference.md ↗](reference.md#11-boy-scout-rule))
+- <a id="rule-quality-gate-discipline"></a>[**Active Diff Review**](reference.md#12-human-judgment-not-mechanizable): The author/agent must review diffs against this checklist before considering work finished.
+- [**Repository Quality Gate**](reference.md#11-boy-scout-rule): Always run the repository's verification commands (`yarn lint:check`, `npm test`, `pytest`, `tsc`).
 - **Never Bypass Linters:** Never disable lint rules to force CI green; fix the root cause.
 
 ---

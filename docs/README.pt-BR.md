@@ -4,6 +4,7 @@
 
 # 🧹 Clean Code Skill
 
+[![npm version](https://img.shields.io/npm/v/skill-clean-code.svg?color=cb3837)](https://www.npmjs.com/package/skill-clean-code)
 [![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-blue.svg)](../LICENSE)
 [![CI](https://github.com/cleitonsilvadev/skill-clean-code/actions/workflows/ci.yml/badge.svg)](https://github.com/cleitonsilvadev/skill-clean-code/actions/workflows/ci.yml)
 [![Compatível com](https://img.shields.io/badge/Compat%C3%ADvel%20com-Claude%20Code%20%7C%20OpenCode%20%7C%20Cursor%20%7C%20Windsurf-black)](https://github.com/cleitonsilvadev/skill-clean-code)
@@ -104,22 +105,22 @@ Abaixo está o índice de todas as regras presentes no checklist da skill (cliqu
 A skill instrui o agente de IA a seguir rigorosamente as seguintes áreas:
 
 ### 1. Fluxo de Controle e Legibilidade
-- <a id="regra-early-return"></a>**Early Return:** Uso de retornos e saídas antecipadas em vez de múltiplos níveis de aninhamento com `if`/`else`. ([Exemplos no reference.md ↗](../reference.md#2-functions))
-- <a id="regra-room-to-breathe"></a>**Room to Breathe (Espaçamento vertical):** Linha em branco antes de cada `if`, após declarações de variáveis, antes de `return` e ao redor de loops. ([Exemplos no reference.md ↗](../reference.md#5-room-to-breathe-and-explicit-scopes))
-- <a id="regra-guard-clauses"></a>**Guard Clauses:** Condicionais de guarda simples permanecem sem chaves apenas quando o corpo é um único `return` ou `throw`. Funções e blocos que realizam trabalho real exigem chaves próprias. ([Exemplos no reference.md ↗](../reference.md#5-room-to-breathe-and-explicit-scopes))
+- <a id="regra-early-return"></a>[**Early Return**](../reference.md#2-functions): Uso de retornos e saídas antecipadas em vez de múltiplos níveis de aninhamento com `if`/`else`.
+- <a id="regra-room-to-breathe"></a>[**Room to Breathe**](../reference.md#5-room-to-breathe-and-explicit-scopes) (Espaçamento vertical): Linha em branco antes de cada `if`, após declarações de variáveis, antes de `return` e ao redor de loops.
+- <a id="regra-guard-clauses"></a>[**Guard Clauses**](../reference.md#5-room-to-breathe-and-explicit-scopes): Condicionais de guarda simples permanecem sem chaves apenas quando o corpo é um único `return` ou `throw`. Funções e blocos que realizam trabalho real exigem chaves próprias.
 
 ### 2. Nomenclatura e Constantes
-- <a id="regra-nomes-descritivos"></a>**Nomes com Intenção Clara:** Nomes descritivos que dizem exatamente o que a variável guarda ou o que a função faz/retorna, sem abreviações ambíguas (`qty`, `tmp`, `val`, `data2`). ([Exemplos no reference.md ↗](../reference.md#1-names-and-intent))
-- <a id="regra-sem-numeros-magicos"></a>**Sem Números Mágicos:** Extração de valores numéricos ou strings de configuração para constantes nomeadas (ex: `UPPER_SNAKE_CASE`). ([Exemplos no reference.md ↗](../reference.md#3-constants-vs-magic-numbers))
-- <a id="regra-padrao-de-idioma"></a>**Padrão de Idioma:** Escrever código (identificadores, tipos, funções) em **inglês** por padrão, salvo se o projeto especificar obrigatoriamente outro idioma — caso em que o projeto tem precedência; comentários, documentação e logs seguem o padrão e o tom estabelecidos no projeto. ([Exemplos no reference.md ↗](../reference.md#1-names-and-intent))
-- <a id="regra-comentarios-de-valor"></a>**Comentários só para o não-óbvio:** Documentação concisa no padrão da linguagem (JSDoc, docstrings) focada no *porquê*, nunca descrevendo o óbvio ou reproduzindo código em texto. ([Exemplos no reference.md ↗](../reference.md#6-comments-only-when-non-obvious))
+- <a id="regra-nomes-descritivos"></a>[**Nomes com Intenção Clara**](../reference.md#1-names-and-intent): Nomes descritivos que dizem exatamente o que a variável guarda ou o que a função faz/retorna, sem abreviações ambíguas (`qty`, `tmp`, `val`, `data2`).
+- <a id="regra-sem-numeros-magicos"></a>[**Sem Números Mágicos**](../reference.md#3-constants-vs-magic-numbers): Extração de valores numéricos ou strings de configuração para constantes nomeadas (ex: `UPPER_SNAKE_CASE`).
+- <a id="regra-padrao-de-idioma"></a>[**Padrão de Idioma**](../reference.md#1-names-and-intent): Escrever código (identificadores, tipos, funções) em **inglês** por padrão, salvo se o projeto especificar obrigatoriamente outro idioma — caso em que o projeto tem precedência; comentários, documentação e logs seguem o padrão e o tom estabelecidos no projeto.
+- <a id="regra-comentarios-de-valor"></a>[**Comentários só para o não-óbvio**](../reference.md#6-comments-only-when-non-obvious): Documentação concisa no padrão da linguagem (JSDoc, docstrings) focada no *porquê*, nunca descrevendo o óbvio ou reproduzindo código em texto.
 
 ### 3. Imutabilidade e Escopo
-- <a id="regra-imutabilidade"></a>**Imutável por padrão:** Preferência por `const`/`readonly` e funções puras nomeadas em vez de variáveis mutáveis (`let`) reatribuídas dentro de blocos condicionais. ([Exemplos no reference.md ↗](../reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse))
-- **Mutação restrita:** `let` é reservado apenas quando a mutação é o cerne do algoritmo (como acumuladores dentro de um loop de agregação). ([Exemplos no reference.md ↗](../reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse))
+- <a id="regra-imutabilidade"></a>[**Imutável por padrão**](../reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): Preferência por `const`/`readonly` e funções puras nomeadas em vez de variáveis mutáveis (`let`) reatribuídas dentro de blocos condicionais.
+- [**Mutação restrita**](../reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): `let` é reservado apenas quando a mutação é o cerne do algoritmo (como acumuladores dentro de um loop de agregação).
 
 ### 4. Tamanho de Funções e Complexidade (SRP)
-- <a id="regra-funcoes-pequenas-srp"></a>**Responsabilidade Única (SRP):** Cada função deve realizar apenas uma tarefa bem definida. ([Exemplos no reference.md ↗](../reference.md#2-functions))
+- <a id="regra-funcoes-pequenas-srp"></a>[**Responsabilidade Única (SRP)**](../reference.md#2-functions): Cada função deve realizar apenas uma tarefa bem definida.
 - **Tamanho visual:** Funções devem caber confortavelmente na tela (~60 linhas). Se exceder, está fazendo mais do que deveria.
 - **Métricas limite:**
   - Máximo de **≤ 4 parâmetros** (acima disso, agrupar em objeto/interface).
@@ -127,28 +128,28 @@ A skill instrui o agente de IA a seguir rigorosamente as seguintes áreas:
   - Nível de aninhamento máximo **≤ 3**.
 
 ### 5. Boas Práticas Sintáticas
-- <a id="regra-comparacao-estrita"></a>**Comparação estrita:** Uso obrigatório de `===` / `!==` (em JS/TS) para evitar coerção implícita de tipos. ([Exemplos no reference.md ↗](../reference.md#7-readability-and-simplicity))
-- <a id="regra-interpolacao-de-strings"></a>**Interpolação de Strings:** Uso de template literals (ex: `` `User ${id}` ``) em vez de concatenação com `+`. ([Exemplos no reference.md ↗](../reference.md#7-readability-and-simplicity))
-- <a id="regra-sem-else-redundante"></a>**Sem `else` redundante:** Nunca utilizar `else` após um bloco que já encerrou o fluxo com `return` ou `throw`. ([Exemplos no reference.md ↗](../reference.md#2-functions))
-- <a id="regra-sem-ternarios-aninhados"></a>**Sem ternários aninhados:** Ternários múltiplos prejudicam a leitura; use guard clauses ou funções auxiliares. ([Exemplos no reference.md ↗](../reference.md#7-readability-and-simplicity))
+- <a id="regra-comparacao-estrita"></a>[**Comparação estrita**](../reference.md#7-readability-and-simplicity): Uso obrigatório de `===` / `!==` (em JS/TS) para evitar coerção implícita de tipos.
+- <a id="regra-interpolacao-de-strings"></a>[**Interpolação de Strings**](../reference.md#7-readability-and-simplicity): Uso de template literals (ex: `` `User ${id}` ``) em vez de concatenação com `+`.
+- <a id="regra-sem-else-redundante"></a>[**Sem `else` redundante**](../reference.md#2-functions): Nunca utilizar `else` após um bloco que já encerrou o fluxo com `return` ou `throw`.
+- <a id="regra-sem-ternarios-aninhados"></a>[**Sem ternários aninhados**](../reference.md#7-readability-and-simplicity): Ternários múltiplos prejudicam a leitura; use guard clauses ou funções auxiliares.
 
 ### 6. Tratamento de Erros Contextualizado
-- <a id="regra-erros-com-contexto"></a>**Sem exceções silenciadas:** É proibido capturar erros e ignorá-los silenciosamente (`catch {}` vazio). ([Exemplos no reference.md ↗](../reference.md#9-error-handling))
-- **Contexto completo:** Erros propagados ou logados devem conter status, mensagem compreensível e a causa original (`cause`). ([Exemplos no reference.md ↗](../reference.md#9-error-handling))
+- <a id="regra-erros-com-contexto"></a>[**Sem exceções silenciadas**](../reference.md#9-error-handling): É proibido capturar erros e ignorá-los silenciosamente (`catch {}` vazio).
+- [**Contexto completo**](../reference.md#9-error-handling): Erros propagados ou logados devem conter status, mensagem compreensível e a causa original (`cause`).
 
 ### 7. Arquitetura e Coesão
-- <a id="regra-separacao-de-camadas"></a>**Desacoplamento:** Regras de negócio desacopladas da infraestrutura de entrada/saída (banco de dados, frameworks HTTP, formatações de view). ([Exemplos no reference.md ↗](../reference.md#8-coupling-and-cohesion))
-- <a id="regra-dry-real"></a>**DRY Real:** Reutilize código apenas quando ele muda **pela mesma razão**; não unifique lógicas distintas que apenas coincidem por acaso. ([Exemplos no reference.md ↗](../reference.md#8-coupling-and-cohesion))
+- <a id="regra-separacao-de-camadas"></a>[**Desacoplamento**](../reference.md#8-coupling-and-cohesion): Regras de negócio desacopladas da infraestrutura de entrada/saída (banco de dados, frameworks HTTP, formatações de view).
+- <a id="regra-dry-real"></a>[**DRY Real**](../reference.md#8-coupling-and-cohesion): Reutilize código apenas quando ele muda **pela mesma razão**; não unifique lógicas distintas que apenas coincidem por acaso.
 
 ### 8. Diretrizes Específicas para React
-- <a id="regra-react-sem-sync-effects"></a>**Proibição de sincronizar estado via `useEffect`:** Não copie props para `state` dentro de efeitos. Reinicie o ciclo com `key` ou calcule valores derivados diretamente na renderização. ([Exemplos no reference.md ↗](../reference.md#10-react--an-effect-is-not-for-syncing-state))
-- <a id="regra-react-efeitos-no-limite"></a>**Efeitos exclusivos para o mundo exterior:** Reservados para conexões de rede, timers, manipulação direta de DOM ou polling. ([Exemplos no reference.md ↗](../reference.md#10-react--an-effect-is-not-for-syncing-state))
-- <a id="regra-react-deps-completas"></a>**Array de dependências completo:** Sem omitir dependências intencionalmente; desestruture referências estáveis de hooks (`const { mutateAsync } = useX()`). ([Exemplos no reference.md ↗](../reference.md#10-react--an-effect-is-not-for-syncing-state))
-- <a id="regra-codigo-gerado-intocado"></a>**Código gerado/vendored intocado:** Não editar manualmente arquivos gerados (como `shadcn/ui`, Prisma clients ou bundles em `dist/`). ([Exemplos no reference.md ↗](../reference.md#10-react--an-effect-is-not-for-syncing-state))
+- <a id="regra-react-sem-sync-effects"></a>[**Proibição de sincronizar estado via `useEffect`**](../reference.md#10-react--an-effect-is-not-for-syncing-state): Não copie props para `state` dentro de efeitos. Reinicie o ciclo com `key` ou calcule valores derivados diretamente na renderização.
+- <a id="regra-react-efeitos-no-limite"></a>[**Efeitos exclusivos para o mundo exterior**](../reference.md#10-react--an-effect-is-not-for-syncing-state): Reservados para conexões de rede, timers, manipulação direta de DOM ou polling.
+- <a id="regra-react-deps-completas"></a>[**Array de dependências completo**](../reference.md#10-react--an-effect-is-not-for-syncing-state): Sem omitir dependências intencionalmente; desestruture referências estáveis de hooks (`const { mutateAsync } = useX()`).
+- <a id="regra-codigo-gerado-intocado"></a>[**Código gerado/vendored intocado**](../reference.md#10-react--an-effect-is-not-for-syncing-state): Não editar manualmente arquivos gerados (como `shadcn/ui`, Prisma clients ou bundles em `dist/`).
 
 ### 9. Portão de Validação e Qualidade
-- <a id="regra-quality-gate"></a>**Revisão ativa da diff:** O agente deve checar as alterações linha a linha contra o checklist antes de declarar a tarefa pronta. ([Exemplos no reference.md ↗](../reference.md#12-human-judgment-not-mechanizable))
-- **Execução do Quality Gate do projeto:** Rodar testes e checagens estáticas configuradas no repositório (`yarn lint:check`, `npm test`, `pytest`, `tsc`). ([Exemplos no reference.md ↗](../reference.md#11-boy-scout-rule))
+- <a id="regra-quality-gate"></a>[**Revisão ativa da diff**](../reference.md#12-human-judgment-not-mechanizable): O agente deve checar as alterações linha a linha contra o checklist antes de declarar a tarefa pronta.
+- [**Execução do Quality Gate do projeto**](../reference.md#11-boy-scout-rule): Rodar testes e checagens estáticas configuradas no repositório (`yarn lint:check`, `npm test`, `pytest`, `tsc`).
 - **Proibido burlar linters:** Nunca desabilitar regras de linter para fazer a CI passar; corrija a causa raiz.
 
 ---
