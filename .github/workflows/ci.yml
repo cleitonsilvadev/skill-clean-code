@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  shellcheck:
+    name: ShellCheck Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Run ShellCheck
+        run: |
+          which shellcheck > /dev/null || sudo apt-get update && sudo apt-get install -y shellcheck
+          shellcheck -e SC1091 install.sh
+
+  installer-test:
+    name: Test Installer (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Make installer executable
+        run: chmod +x install.sh
+
+      - name: Test help flag
+        run: ./install.sh --help
+
+      - name: Test global installation
+        run: |
+          ./install.sh --global
+          test -f "$HOME/.claude/skills/clean-code/SKILL.md"
+          test -f "$HOME/.claude/skills/clean-code/reference.md"
+          test -f "$HOME/.agents/skills/clean-code/SKILL.md"
+          test -f "$HOME/.agents/skills/clean-code/reference.md"
+
+      - name: Test symlink installation
+        run: |
+          ./install.sh --symlink
+          test -L "$HOME/.claude/skills/clean-code"
+          test -L "$HOME/.agents/skills/clean-code"
+
+      - name: Test per-project installation
+        run: |
+          ./install.sh --project ./test-workspace
+          test -f "./test-workspace/.claude/skills/clean-code/SKILL.md"
+          test -f "./test-workspace/.claude/skills/clean-code/reference.md"
+          test -f "./test-workspace/.agents/skills/clean-code/SKILL.md"
+          test -f "./test-workspace/.agents/skills/clean-code/reference.md"
+
+      - name: Test Cursor rules generation
+        run: |
+          ./install.sh --cursor ./test-workspace
+          test -f "./test-workspace/.cursorrules"
+          grep -q "Early Return" "./test-workspace/.cursorrules"
+
+      - name: Test Windsurf rules generation
+        run: |
+          ./install.sh --windsurf ./test-workspace
+          test -f "./test-workspace/.windsurfrules"
+          grep -q "Early Return" "./test-workspace/.windsurfrules"
+
+      - name: Test Git hook installation
+        run: |
+          mkdir -p ./test-workspace/.git
+          ./install.sh --hook ./test-workspace
+          test -x "./test-workspace/.git/hooks/pre-commit"
+          make hook
+
+      - name: Test piped execution (like curl | bash)
+        run: |
+          cat install.sh | bash -s -- --project ./pipe-workspace
+          test -f "./pipe-workspace/.claude/skills/clean-code/SKILL.md"
+          test -f "./pipe-workspace/.agents/skills/clean-code/SKILL.md"
+
+      - name: Test uninstallation
+        run: |
+          ./install.sh --uninstall
+          ! test -e "$HOME/.claude/skills/clean-code"
+          ! test -e "$HOME/.agents/skills/clean-code"
+
+      - name: Test Makefile targets
+        run: |
+          make install
+          make cursor
+          make windsurf
+          test -f "./.cursorrules"
+          test -f "./.windsurfrules"
+          make uninstall
+
+  docs-check:
+    name: Verify Documentation Links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Verify referenced files exist
+        run: |
+          test -f SKILL.md
+          test -f reference.md
+          test -f LICENSE
+          test -f CONTRIBUTING.md
+          test -f docs/INSTALL.md
+          test -f docs/INSTALL.pt-BR.md
+          test -f docs/README.pt-BR.md
+          test -f docs/CONTRIBUTING.pt-BR.md
+          test -f rules/cursorrules
+          test -f rules/windsurfrules
+          test -f rules/pre-commit
+          test -f package.json

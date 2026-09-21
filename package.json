@@ -1,0 +1,47 @@
+{
+  "name": "skill-clean-code",
+  "version": "1.0.0",
+  "description": "Universal clean code skill for AI agents (Claude Code, OpenCode) with actionable checklists and practical reference examples.",
+  "main": "bin/cli.js",
+  "bin": {
+    "skill-clean-code": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "install.sh",
+    "SKILL.md",
+    "reference.md",
+    "rules/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "install:global": "./install.sh --global",
+    "install:project": "./install.sh --project",
+    "install:cursor": "./install.sh --cursor",
+    "install:windsurf": "./install.sh --windsurf",
+    "install:hook": "./install.sh --hook",
+    "uninstall": "./install.sh --uninstall"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cleitonsilvadev/skill-clean-code.git"
+  },
+  "keywords": [
+    "clean-code",
+    "claude-code",
+    "opencode",
+    "cursor",
+    "windsurf",
+    "agent-skills",
+    "code-quality",
+    "ai-coding",
+    "developer-tools"
+  ],
+  "author": "Cleiton Silva (https://github.com/cleitonsilvadev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cleitonsilvadev/skill-clean-code/issues"
+  },
+  "homepage": "https://github.com/cleitonsilvadev/skill-clean-code#readme"
+}
