@@ -89,13 +89,19 @@ Index of all rules from the skill checklist (click the `#` number to jump to the
 | [**11**](#rule-string-interpolation) | **String Interpolation** | Best Practices | Use template literals instead of manual concatenation with `+` |
 | [**12**](#rule-no-nested-ternaries) | **No Nested Ternaries** | Best Practices | Replace nested ternary operators with guard clauses or helper functions |
 | [**13**](#rule-errors-with-context) | **Context-Rich Errors** | Error Handling | Propagate errors with status, clear message, and `cause`; never swallow |
-| [**14**](#rule-layer-separation) | **Layer Separation** | Architecture | Decouple business logic from HTTP frameworks, DB, and view formatting |
-| [**15**](#rule-real-dry) | **Real DRY** | Architecture | Reuse code only when it changes for the same underlying reason |
-| [**16**](#rule-react-no-sync-effects) | **React: No Sync Effects** | React | Never copy props to state inside `useEffect` |
-| [**17**](#rule-react-effects-boundary) | **React: Effects Boundary** | React | Reserve `useEffect` strictly for external synchronization (DOM, timers, network) |
-| [**18**](#rule-react-complete-deps) | **React: Complete Deps** | React | Keep dependency arrays complete; destructure stable hooks |
-| [**19**](#rule-react-untouched-generated) | **Untouched Generated Code** | React | Never manually edit generated or vendored files (`components/ui/`, dist) |
-| [**20**](#rule-quality-gate-discipline) | **Quality Gate Discipline** | Validation | Diff review against checklist and running tests/linters without disabling rules |
+| [**14**](#rule-no-type-escape-hatches) | **No Escape Hatches** | Best Practices | Avoid `any` and `@ts-ignore`; use `unknown` with narrowing or schemas |
+| [**15**](#rule-no-boolean-flags) | **No Boolean Flags** | Function Design | Avoid `f(data, true)`; split into focused functions or options object |
+| [**16**](#rule-concurrent-io-batches) | **Concurrent I/O & Batches** | Concurrency | Avoid sequential await in loops; run concurrently or in chunked batches |
+| [**17**](#rule-cqs) | **CQS Separation** | Architecture | A function executes an action or queries data, never both secretly |
+| [**18**](#rule-parse-at-boundary) | **Parse at the Boundary** | Architecture | Validate inputs at boundaries (schemas/Zod) so core logic has safe types |
+| [**19**](#rule-narrow-variable-scoping) | **Narrow Scoping** | Immutability | Declare variables immediately before first use, not hoisted prematurely |
+| [**20**](#rule-layer-separation) | **Layer Separation** | Architecture | Decouple business logic from HTTP frameworks, DB, and view formatting |
+| [**21**](#rule-real-dry) | **Real DRY** | Architecture | Reuse code only when it changes for the same underlying reason |
+| [**22**](#rule-react-no-sync-effects) | **React: No Sync Effects** | React | Never copy props to state inside `useEffect` |
+| [**23**](#rule-react-effects-boundary) | **React: Effects Boundary** | React | Reserve `useEffect` strictly for external synchronization (DOM, timers, network) |
+| [**24**](#rule-react-complete-deps) | **React: Complete Deps** | React | Keep dependency arrays complete; destructure stable hooks |
+| [**25**](#rule-react-untouched-generated) | **Untouched Generated Code** | React | Never manually edit generated or vendored files (`components/ui/`, dist) |
+| [**26**](#rule-quality-gate-discipline) | **Quality Gate Discipline** | Validation | Diff review against checklist and running tests/linters without disabling rules |
 
 ---
 
@@ -114,10 +120,12 @@ The skill instructs AI agents to strictly adhere to the following areas:
 - <a id="rule-no-magic-numbers"></a>[**No Magic Numbers**](reference.md#3-constants-vs-magic-numbers): Extract numeric or literal values to named constants (e.g., `UPPER_SNAKE_CASE`).
 - <a id="rule-language-convention"></a>[**Language Convention**](reference.md#1-names-and-intent): Write code (identifiers, functions, types) in **English** by default, unless the project explicitly specifies another language; comments, documentation, and user-facing logs follow the pattern and tone established in the project.
 - <a id="rule-valuable-comments"></a>[**Comments for the Non-Obvious**](reference.md#6-comments-only-when-non-obvious): Concise JSDoc/docstrings focusing on *why*, never narrating what the code visibly does.
+- <a id="rule-no-boolean-flags"></a>[**No Boolean Flag Arguments**](reference.md#boolean-flag-arguments): Avoid passing literal boolean flags (`createUser(data, true)`). Split into two intent-revealing functions or accept an options object (`{ notify: true }`).
 
 ### 3. Immutability & Scope
 - <a id="rule-immutable-by-default"></a>[**Immutable by Default**](reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): Prefer `const`/`readonly` plus named pure functions over mutable variables (`let`) reassigned across conditional branches.
 - [**Restricted Mutation**](reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): `let` is reserved strictly when mutation is the essence of the algorithm (e.g., loop accumulators).
+- <a id="rule-narrow-variable-scoping"></a>[**Narrow Variable Scoping**](reference.md#narrow-variable-scoping): Declare variables and constants immediately before their first usage, not hoisted prematurely to the top of a function.
 
 ### 4. Function Size & Complexity (SRP)
 - <a id="rule-small-functions-srp"></a>[**Single Responsibility Principle (SRP)**](reference.md#2-functions): Each function must do one thing only.
@@ -132,14 +140,18 @@ The skill instructs AI agents to strictly adhere to the following areas:
 - <a id="rule-string-interpolation"></a>[**String Interpolation**](reference.md#7-readability-and-simplicity): Use template literals (e.g. `` `User ${id}` ``) instead of `+` concatenation.
 - <a id="rule-no-else-after-return"></a>[**No Redundant Else**](reference.md#2-functions): Never write an `else` branch after a block that already terminated execution with `return` or `throw`.
 - <a id="rule-no-nested-ternaries"></a>[**No Nested Ternaries**](reference.md#7-readability-and-simplicity): Nested ternaries impair readability; use guard clauses or dedicated helper functions.
+- <a id="rule-no-type-escape-hatches"></a>[**No Type Escape Hatches**](reference.md#no-type-escape-hatches-any-ts-ignore): Avoid `any`, `@ts-ignore`, or blind type assertions. Use `unknown` with narrowing or schema validation.
 
-### 6. Context-Rich Error Handling
+### 6. Context-Rich Error Handling & Concurrency
 - <a id="rule-errors-with-context"></a>[**Never Swallow Exceptions**](reference.md#9-error-handling): Capturing errors without proper handling or logging (`catch {}`) is strictly prohibited.
 - [**Full Context**](reference.md#9-error-handling): Propagated or logged errors must include status, clear human-readable message, and original `cause`.
+- <a id="rule-concurrent-io-batches"></a>[**Concurrent I/O & Chunked Batches**](reference.md#concurrent-io-and-chunked-batches): Avoid sequential `await` inside loops for independent calls. Run with `Promise.all()` for small bounded collections, or process in controlled chunks/batches for large volumes to protect socket and memory limits.
 
 ### 7. Architecture & Cohesion
 - <a id="rule-layer-separation"></a>[**Decoupling**](reference.md#8-coupling-and-cohesion): Separate core business logic from infrastructure (database queries, HTTP controllers, view formatting).
 - <a id="rule-real-dry"></a>[**Real DRY**](reference.md#8-coupling-and-cohesion): Merge code only when it changes **for the exact same reason**; do not artificially unify distinct logic that temporarily looks similar.
+- <a id="rule-cqs"></a>[**Command Query Separation (CQS)**](reference.md#command-query-separation-cqs): A function should either perform an action (command) or return data (query), never both secretly. Functions with query names must not trigger hidden mutations.
+- <a id="rule-parse-at-boundary"></a>[**Parse at the Boundary**](reference.md#parse-at-the-boundary-dont-validate-everywhere): Validate and shape untyped inputs at system boundaries (routes, queues, webhooks) using typed schemas (e.g. Zod), so core business logic receives guaranteed, strongly-typed data without defensive boilerplate.
 
 ### 8. React-Specific Guidelines
 - <a id="rule-react-no-sync-effects"></a>[**Effects Do Not Sync State**](reference.md#10-react--an-effect-is-not-for-syncing-state): Never copy props into state inside `useEffect`. Reset with `key` or compute derived state during rendering.

@@ -102,6 +102,44 @@ func Process(user *User) error {
 }
 ```
 
+### Boolean flag arguments
+
+Boolean flags as parameters indicate that a function does more than one thing and obscures call-site readability.
+
+**❌ Avoid:**
+
+```ts
+function createUser(name: string, isAdmin: boolean) {
+  if (isAdmin) {
+    // provisioning with elevated privileges
+    return createAdmin(name);
+  }
+
+  // standard user provisioning
+  return createStandard(name);
+}
+
+createUser("Alice", true); // what does true mean?
+```
+
+**✅ Prefer:**
+
+```ts
+// Split into two dedicated functions:
+function createAdminUser(name: string) {
+  /* ... */
+}
+
+function createStandardUser(name: string) {
+  /* ... */
+}
+
+// Or pass an explicit options object:
+function createUser(name: string, options?: { notifyOnboarding?: boolean }) {
+  /* ... */
+}
+```
+
 ---
 
 ## 3. Constants vs. magic numbers
@@ -242,6 +280,39 @@ async function settleWithdrawal(input: WithdrawalInput): Promise<Receipt> {
 Read the ✅ version's left edge alone and the flow is already there: load, price,
 send, react, settle. That is what the blank lines buy.
 
+### Narrow variable scoping
+
+Declare variables and constants as close to their first usage as possible. Avoid hoarding declarations at the top of the function.
+
+**❌ Avoid:**
+
+```ts
+function processOrder(order: Order) {
+  const taxRate = getTaxRate();
+  const discount = calculateDiscount(order);
+
+  if (!order.items.length) return null;
+  if (!order.isVerified) return null;
+
+  // 30 lines later...
+  return (order.subtotal - discount) * (1 + taxRate);
+}
+```
+
+**✅ Prefer:**
+
+```ts
+function processOrder(order: Order) {
+  if (!order.items.length) return null;
+  if (!order.isVerified) return null;
+
+  const discount = calculateDiscount(order);
+  const taxRate = getTaxRate();
+
+  return (order.subtotal - discount) * (1 + taxRate);
+}
+```
+
 ---
 
 ## 6. Comments: only when non-obvious
@@ -282,6 +353,68 @@ function calculateBackoffDelay(attempt: number): number {
 - **DRY**: extract what repeats — but apparent duplication ≠ real duplication. Only
   merge what changes for the same reason.
 
+### No type escape hatches (`any`, `@ts-ignore`)
+
+Using `any` or `@ts-ignore` disables the compiler and pushes runtime crashes to production. Use `unknown` with type narrowing or schema parsing.
+
+**❌ Avoid:**
+
+```ts
+const payload: any = JSON.parse(rawResponse);
+
+// @ts-ignore
+payload.executeTransaction();
+```
+
+**✅ Prefer:**
+
+```ts
+const raw: unknown = JSON.parse(rawResponse);
+const payload = TransactionPayloadSchema.parse(raw);
+
+payload.executeTransaction();
+```
+
+### Concurrent I/O and chunked batches
+
+Avoid sequential `await` inside loops for independent I/O. Use `Promise.all()` for small bounded collections; for large volumes, process in batches to prevent socket exhaustion and memory spikes.
+
+**❌ Avoid — sequential await inside loop:**
+
+```ts
+for (const userId of userIds) {
+  await notifyUser(userId); // slow: executes one by one
+}
+```
+
+**❌ Avoid — unbounded Promise.all on large collections:**
+
+```ts
+// Risk: opens thousands of concurrent sockets, crashes DB/network
+await Promise.all(thousandUserIds.map(notifyUser));
+```
+
+**✅ Prefer — Promise.all for small bounded sets:**
+
+```ts
+const [user, preferences, permissions] = await Promise.all([
+  fetchUser(id),
+  fetchPreferences(id),
+  fetchPermissions(id),
+]);
+```
+
+**✅ Prefer — chunked batches for large collections:**
+
+```ts
+const CHUNK_SIZE = 50;
+
+for (let i = 0; i < userIds.length; i += CHUNK_SIZE) {
+  const chunk = userIds.slice(i, i + CHUNK_SIZE);
+  await Promise.all(chunk.map(notifyUser));
+}
+```
+
 ---
 
 ## 8. Coupling and cohesion
@@ -293,6 +426,71 @@ function calculateBackoffDelay(attempt: number): number {
 - **Separate business logic from infrastructure** (DB, HTTP, queues, formatting).
 - Prefer **composition over inheritance**.
 - A file growing too large is a sign it is doing too much.
+
+### Command Query Separation (CQS)
+
+A function should either perform an action (command) or return data (query), never both secretly. Functions with query names (`getUser`, `isValid`) must not trigger hidden mutations.
+
+**❌ Avoid — query with hidden mutation:**
+
+```ts
+function getUser(id: string): User {
+  const user = db.users.find(id);
+
+  user.lastAccessedAt = new Date(); // hidden side effect!
+  db.users.save(user);
+
+  return user;
+}
+```
+
+**✅ Prefer — separate query and command:**
+
+```ts
+function getUser(id: string): User {
+  return db.users.find(id);
+}
+
+function touchUserAccess(id: string): void {
+  db.users.update(id, { lastAccessedAt: new Date() });
+}
+```
+
+### Parse at the boundary, don't validate everywhere
+
+Validate and shape untyped inputs at system boundaries (HTTP request, queue message, webhook) using typed schemas (e.g. Zod). Core business logic receives strongly-typed data without defensive boilerplate.
+
+**❌ Avoid — defensive checks scattered across services:**
+
+```ts
+function processTransfer(input: any) {
+  if (!input || typeof input.amount !== 'number' || input.amount <= 0) {
+    throw new Error('Invalid amount');
+  }
+  // Repeated in controller, service, repository...
+}
+```
+
+**✅ Prefer — parse once at the entry boundary:**
+
+```ts
+import { z } from 'zod';
+
+const TransferSchema = z.object({
+  amount: z.number().int().positive(),
+  recipientId: z.string().uuid(),
+});
+
+type TransferDTO = z.infer<typeof TransferSchema>;
+
+// Boundary (Route / Controller):
+const transferData = TransferSchema.parse(req.body);
+
+// Domain Service (Operates on guaranteed types):
+function processTransfer(data: TransferDTO) {
+  return ledger.execute(data);
+}
+```
 
 ---
 

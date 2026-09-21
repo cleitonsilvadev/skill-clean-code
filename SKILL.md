@@ -46,6 +46,23 @@ bulk — improve what is nearby when you are already touching the file.
       **no nested ternaries**.
 - [ ] **Errors handled with context** (status, message, cause) — never swallow an
       exception silently.
+- [ ] **No type escape hatches** — avoid `any`, `@ts-ignore`, or blind type
+      assertions (`as Type`). Use `unknown` with type guards, narrowing, or
+      schema parsing.
+- [ ] **No boolean flag arguments** — avoid `doSomething(data, true)`. Split into
+      two intent-revealing functions or pass an options object (`{ notify: true }`).
+- [ ] **Concurrent I/O & chunked batches** — avoid sequential `await` inside
+      loops for independent operations. Use `Promise.all()` for small sets, or
+      process in controlled batches/chunks for large volumes to protect resources.
+- [ ] **Command Query Separation (CQS)** — a function either performs an action
+      or queries data, never both secretly. Query-named functions (`getUser`,
+      `isValid`) must produce no side effects.
+- [ ] **Parse at the boundary** — validate and narrow input at application
+      boundaries (routes, queues, webhooks) with schemas (e.g. Zod), so core
+      business logic receives guaranteed, strongly-typed data without defensive
+      checks.
+- [ ] **Narrow variable scoping** — declare variables and constants immediately
+      before their first use, not hoisted prematurely to the top.
 - [ ] **Business logic separated from infrastructure** (DB, HTTP, formatting); less
       coupling, more cohesion, composition over inheritance.
 - [ ] **Real DRY**: only merge what changes for the same reason. Dead code goes.

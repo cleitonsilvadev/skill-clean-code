@@ -13,8 +13,14 @@ You are an expert software engineer adhering strictly to Clean Code principles.
 8. Meaningful Comments: Only comment the non-obvious (why, not what) in JSDoc/docstrings.
 9. Clean Syntax & Comparisons: Mandatory === / !==, string interpolation over + concatenation, no else after return, no nested ternaries.
 10. Context-Rich Error Handling: Always include status, clear message, and cause. Never swallow exceptions silently.
-11. Architectural Separation: Decouple core business logic from infrastructure (HTTP, database, UI formatting).
-12. Real DRY: Only unify code that changes for the exact same business reason.
+11. No Type Escape Hatches: Avoid `any`, `@ts-ignore`, or blind type assertions. Use `unknown` with narrowing or schema validation.
+12. No Boolean Flag Arguments: Avoid `doSomething(data, true)`. Split into dedicated functions or pass an options object.
+13. Concurrent I/O & Batches: Avoid sequential `await` inside loops for independent calls. Use `Promise.all` for small sets; process in controlled batches for large volumes.
+14. Command Query Separation (CQS): A function performs an action or queries data, never both secretly.
+15. Parse at the Boundary: Validate and shape untyped inputs at system boundaries with schemas (Zod/Pydantic) so business logic receives guaranteed types.
+16. Narrow Variable Scoping: Declare variables immediately before their first usage, not hoisted prematurely.
+17. Architectural Separation: Decouple core business logic from infrastructure (HTTP, database, UI formatting).
+18. Real DRY: Only unify code that changes for the exact same business reason.
 
 ## React Rules (when applicable):
 - Never copy props to state inside useEffect (no sync effects).

@@ -89,13 +89,19 @@ Abaixo está o índice de todas as regras presentes no checklist da skill (cliqu
 | [**11**](#regra-interpolacao-de-strings) | **Interpolação de Strings** | Boas Práticas | Uso de template literals em vez de concatenação manual com `+` |
 | [**12**](#regra-sem-ternarios-aninhados) | **Sem Ternários Aninhados** | Boas Práticas | Substituição de ternários aninhados por guard clauses ou funções |
 | [**13**](#regra-erros-com-contexto) | **Erros com Contexto** | Tratamento de Erros | Erros com status, mensagem e `cause`, sem engolir exceções |
-| [**14**](#regra-separacao-de-camadas) | **Separação de Camadas** | Arquitetura | Regras de negócio desacopladas de frameworks HTTP e banco de dados |
-| [**15**](#regra-dry-real) | **DRY Real** | Arquitetura | Reutilização de código apenas quando muda pelo mesmo motivo |
-| [**16**](#regra-react-sem-sync-effects) | **React: Sem Sync em Effects** | React | Proibição de copiar props para state dentro de `useEffect` |
-| [**17**](#regra-react-efeitos-no-limite) | **React: Efeitos no Limite** | React | `useEffect` reservado para o mundo exterior (DOM, timers, rede) |
-| [**18**](#regra-react-deps-completas) | **React: Deps Completas** | React | Array de dependências completo sem omitir referências necessárias |
-| [**19**](#regra-codigo-gerado-intocado) | **Código Gerado Intocado** | React | Preservação de arquivos gerados por bibliotecas ou build (`components/ui/`) |
-| [**20**](#regra-quality-gate) | **Quality Gate & Disciplina** | Validação | Revisão da diff e execução de testes/linters sem desabilitar regras |
+| [**14**](#regra-sem-escape-hatches) | **Sem Escape Hatches** | Boas Práticas | Evitar `any` e `@ts-ignore`; usar `unknown` com narrowing ou schemas |
+| [**15**](#regra-sem-flags-booleanas) | **Sem Flags Booleanas** | Design de Funções | Evitar `f(data, true)`; dividir em funções dedicadas ou objeto de opções |
+| [**16**](#regra-concorrencia-lotes) | **Concorrência & Lotes** | Concorrência | Evitar await sequencial em loops; rodar concorrente ou em lotes |
+| [**17**](#regra-cqs) | **Separação CQS** | Arquitetura | Uma função altera estado ou consulta dados, nunca ambos ocultamente |
+| [**18**](#regra-parse-na-borda) | **Parse na Borda** | Arquitetura | Validar entradas na borda (Zod/schemas); regra de negócio com tipos seguros |
+| [**19**](#regra-escopo-proximo-ao-uso) | **Escopo Próximo ao Uso** | Imutabilidade | Declarar variáveis imediatamente antes do primeiro uso, não no topo |
+| [**20**](#regra-separacao-de-camadas) | **Separação de Camadas** | Arquitetura | Regras de negócio desacopladas de frameworks HTTP e banco de dados |
+| [**21**](#regra-dry-real) | **DRY Real** | Arquitetura | Reutilização de código apenas quando muda pelo mesmo motivo |
+| [**22**](#regra-react-sem-sync-effects) | **React: Sem Sync em Effects** | React | Proibição de copiar props para state dentro de `useEffect` |
+| [**23**](#regra-react-efeitos-no-limite) | **React: Efeitos no Limite** | React | `useEffect` reservado para o mundo exterior (DOM, timers, rede) |
+| [**24**](#regra-react-deps-completas) | **React: Deps Completas** | React | Array de dependências completo sem omitir referências necessárias |
+| [**25**](#regra-codigo-gerado-intocado) | **Código Gerado Intocado** | React | Preservação de arquivos gerados por bibliotecas ou build (`components/ui/`) |
+| [**26**](#regra-quality-gate) | **Quality Gate & Disciplina** | Validação | Revisão da diff e execução de testes/linters sem desabilitar regras |
 
 ---
 
@@ -114,10 +120,12 @@ A skill instrui o agente de IA a seguir rigorosamente as seguintes áreas:
 - <a id="regra-sem-numeros-magicos"></a>[**Sem Números Mágicos**](../reference.md#3-constants-vs-magic-numbers): Extração de valores numéricos ou strings de configuração para constantes nomeadas (ex: `UPPER_SNAKE_CASE`).
 - <a id="regra-padrao-de-idioma"></a>[**Padrão de Idioma**](../reference.md#1-names-and-intent): Escrever código (identificadores, tipos, funções) em **inglês** por padrão, salvo se o projeto especificar obrigatoriamente outro idioma — caso em que o projeto tem precedência; comentários, documentação e logs seguem o padrão e o tom estabelecidos no projeto.
 - <a id="regra-comentarios-de-valor"></a>[**Comentários só para o não-óbvio**](../reference.md#6-comments-only-when-non-obvious): Documentação concisa no padrão da linguagem (JSDoc, docstrings) focada no *porquê*, nunca descrevendo o óbvio ou reproduzindo código em texto.
+- <a id="regra-sem-flags-booleanas"></a>[**Sem Flags Booleanas**](../reference.md#boolean-flag-arguments): Evitar passar argumentos booleanos literais para controlar fluxos (`createUser(data, true)`). Divida em funções dedicadas ou passe um objeto de opções nomeado (`{ notify: true }`).
 
 ### 3. Imutabilidade e Escopo
 - <a id="regra-imutabilidade"></a>[**Imutável por padrão**](../reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): Preferência por `const`/`readonly` e funções puras nomeadas em vez de variáveis mutáveis (`let`) reatribuídas dentro de blocos condicionais.
 - [**Mutação restrita**](../reference.md#4-immutability--avoid-a-mutable-variable-decided-in-an-ifelse): `let` é reservado apenas quando a mutação é o cerne do algoritmo (como acumuladores dentro de um loop de agregação).
+- <a id="regra-escopo-proximo-ao-uso"></a>[**Escopo Próximo ao Uso**](../reference.md#narrow-variable-scoping): Declarar variáveis e constantes imediatamente antes de sua primeira utilização, evitando agrupá-las prematuramente no topo de uma função.
 
 ### 4. Tamanho de Funções e Complexidade (SRP)
 - <a id="regra-funcoes-pequenas-srp"></a>[**Responsabilidade Única (SRP)**](../reference.md#2-functions): Cada função deve realizar apenas uma tarefa bem definida.
@@ -132,14 +140,18 @@ A skill instrui o agente de IA a seguir rigorosamente as seguintes áreas:
 - <a id="regra-interpolacao-de-strings"></a>[**Interpolação de Strings**](../reference.md#7-readability-and-simplicity): Uso de template literals (ex: `` `User ${id}` ``) em vez de concatenação com `+`.
 - <a id="regra-sem-else-redundante"></a>[**Sem `else` redundante**](../reference.md#2-functions): Nunca utilizar `else` após um bloco que já encerrou o fluxo com `return` ou `throw`.
 - <a id="regra-sem-ternarios-aninhados"></a>[**Sem ternários aninhados**](../reference.md#7-readability-and-simplicity): Ternários múltiplos prejudicam a leitura; use guard clauses ou funções auxiliares.
+- <a id="regra-sem-escape-hatches"></a>[**Sem Escape Hatches**](../reference.md#no-type-escape-hatches-any-ts-ignore): Proibido o uso de `any`, `@ts-ignore` ou coerção forçada (`as Type`). Use `unknown` com narrowing de tipos ou schemas de validação.
 
-### 6. Tratamento de Erros Contextualizado
+### 6. Tratamento de Erros Contextualizado & Concorrência
 - <a id="regra-erros-com-contexto"></a>[**Sem exceções silenciadas**](../reference.md#9-error-handling): É proibido capturar erros e ignorá-los silenciosamente (`catch {}` vazio).
 - [**Contexto completo**](../reference.md#9-error-handling): Erros propagados ou logados devem conter status, mensagem compreensível e a causa original (`cause`).
+- <a id="regra-concorrencia-lotes"></a>[**Concorrência & Lotes**](../reference.md#concurrent-io-and-chunked-batches): Evitar `await` sequencial dentro de loops para chamadas independentes. Use `Promise.all()` para coleções pequenas ou processe em lotes/chunks controlados para volumes grandes, protegendo sockets e memória.
 
 ### 7. Arquitetura e Coesão
 - <a id="regra-separacao-de-camadas"></a>[**Desacoplamento**](../reference.md#8-coupling-and-cohesion): Regras de negócio desacopladas da infraestrutura de entrada/saída (banco de dados, frameworks HTTP, formatações de view).
 - <a id="regra-dry-real"></a>[**DRY Real**](../reference.md#8-coupling-and-cohesion): Reutilize código apenas quando ele muda **pela mesma razão**; não unifique lógicas distintas que apenas coincidem por acaso.
+- <a id="regra-cqs"></a>[**Separação CQS**](../reference.md#command-query-separation-cqs): Uma função deve alterar o estado (comando) ou retornar dados (consulta), nunca ambos ocultamente. Funções com nome de consulta não devem gerar efeitos colaterais.
+- <a id="regra-parse-na-borda"></a>[**Parse na Borda**](../reference.md#parse-at-the-boundary-dont-validate-everywhere): Valide e modele entradas na borda da aplicação (rotas, filas, webhooks) via schemas tipados (ex: Zod), garantindo que a regra de negócio receba tipos seguros sem validações defensivas repetitivas.
 
 ### 8. Diretrizes Específicas para React
 - <a id="regra-react-sem-sync-effects"></a>[**Proibição de sincronizar estado via `useEffect`**](../reference.md#10-react--an-effect-is-not-for-syncing-state): Não copie props para `state` dentro de efeitos. Reinicie o ciclo com `key` ou calcule valores derivados diretamente na renderização.
